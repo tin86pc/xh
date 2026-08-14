@@ -3,580 +3,1229 @@
 
 <head>
 
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>Tạo QR VietQR</title>
-
-
-    <!-- Thu vien QR -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-        }
-
-
-        body {
-            margin: 0;
-            padding: 20px;
-
-            font-family: Arial, sans-serif;
-
-            background: #f2f4f7;
-        }
-
-
-        .container {
-            width: 100%;
-            max-width: 500px;
-
-            margin: auto;
-
-            padding: 25px;
-
-            background: white;
-
-            border-radius: 15px;
-
-            box-shadow:
-                0 4px 20px rgba(0,0,0,0.1);
-        }
-
-
-        h2 {
-            text-align: center;
-
-            margin-top: 0;
-
-            margin-bottom: 25px;
-        }
-
-
-        label {
-            display: block;
-
-            margin-top: 15px;
-
-            margin-bottom: 6px;
-
-            font-weight: bold;
-        }
-
-
-        input,
-        select {
-
-            width: 100%;
-
-            padding: 12px;
-
-            font-size: 16px;
-
-            border: 1px solid #ccc;
-
-            border-radius: 8px;
-
-            outline: none;
-        }
-
-
-        input:focus,
-        select:focus {
-
-            border-color: #1677ff;
-        }
-
-
-        button {
-
-            width: 100%;
-
-            padding: 13px;
-
-            margin-top: 15px;
-
-            border: 0;
-
-            border-radius: 8px;
-
-            font-size: 16px;
-
-            cursor: pointer;
-        }
-
-
-        #btnCreate {
-
-            background: #1677ff;
-
-            color: white;
-        }
-
-
-        #btnCreate:hover {
-
-            background: #095fc7;
-        }
-
-
-        #btnDownload {
-
-            background: #16a34a;
-
-            color: white;
-
-            display: none;
-        }
-
-
-        #btnClear {
-
-            background: #dc2626;
-
-            color: white;
-        }
-
-
-        #btnClear:hover {
-
-            background: #b91c1c;
-        }
-
-
-        #btnShare {
-
-            background: #7c3aed;
-
-            color: white;
-        }
-
-
-        #btnShare:hover {
-
-            background: #6d28d9;
-        }
-
-
-        .section-title {
-
-            margin-top: 25px;
-
-            padding-bottom: 6px;
-
-            border-bottom: 1px solid #ddd;
-
-            font-weight: bold;
-
-            font-size: 17px;
-        }
-
-
-        .saved {
-
-            margin-top: 10px;
-
-            padding: 8px;
-
-            text-align: center;
-
-            color: #16a34a;
-
-            font-size: 14px;
-
-            display: none;
-        }
-
-
-        .qr-box {
-
-            margin-top: 25px;
-
-            text-align: center;
-        }
-
-
-        #qrcode {
-
-            display: inline-block;
-
-            padding: 10px;
-
-            background: white;
-        }
-
-
-        #qrcode img {
-
-            display: block;
-
-            max-width: 100%;
-        }
-
-
-        .info {
-
-            margin-top: 15px;
-
-            padding: 12px;
-
-            background: #f5f5f5;
-
-            border-radius: 8px;
-
-            line-height: 1.7;
-
-            text-align: left;
-        }
-
-
-        /*
-         * Khung QR chia se
-         */
-
-        #shareBox {
-
-            display: none;
-
-            margin-top: 20px;
-
-            padding: 15px;
-
-            background: #f5f5f5;
-
-            border-radius: 10px;
-
-            text-align: center;
-        }
-
-
-        #shareQRCode {
-
-            display: inline-block;
-
-            padding: 10px;
-
-            background: white;
-        }
-
-
-        #shareURL {
-
-            margin-top: 10px;
-
-            font-size: 13px;
-
-            word-break: break-all;
-
-            color: #555;
-
-            line-height: 1.5;
-        }
-
-
-        #btnCloseShare {
-
-            background: #666;
-
-            color: white;
-        }
-
-    </style>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Tạo QR VietQR</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background: #f2f4f7;
+}
+
+.container {
+    width: 100%;
+    max-width: 520px;
+    margin: auto;
+    padding: 25px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+h2 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    font-family: Arial, sans-serif;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #1677ff;
+}
+
+button {
+    width: 100%;
+    padding: 13px;
+    margin-top: 12px;
+    border: 0;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.section-title {
+    margin-top: 25px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid #ddd;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+#btnCreate {
+    background: #1677ff;
+    color: white;
+}
+
+#btnCalculate {
+    background: #f59e0b;
+    color: white;
+}
+
+#btnDownload {
+    background: #16a34a;
+    color: white;
+    display: none;
+}
+
+#btnClear {
+    background: #dc2626;
+    color: white;
+}
+
+#btnShare {
+    background: #7c3aed;
+    color: white;
+}
+
+#btnCloseShare {
+    background: #666;
+    color: white;
+}
+
+.saved {
+    margin-top: 10px;
+    padding: 8px;
+    text-align: center;
+    color: #16a34a;
+    font-size: 14px;
+    display: none;
+}
+
+.calculator {
+    margin-top: 15px;
+    padding: 15px;
+    background: #f8fafc;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+.price-input {
+    min-height: 160px;
+    resize: vertical;
+    line-height: 1.8;
+    font-family: monospace;
+    font-size: 17px;
+}
+
+.calc-note {
+    margin-top: 8px;
+    color: #777;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.calc-result {
+    margin-top: 15px;
+    padding: 12px;
+    background: #ecfdf5;
+    border-radius: 8px;
+    color: #15803d;
+    text-align: left;
+    line-height: 1.7;
+}
+
+.calc-total {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #bbf7d0;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.qr-box {
+    margin-top: 25px;
+    text-align: center;
+}
+
+#qrcode {
+    display: inline-block;
+    padding: 10px;
+    background: white;
+}
+
+#qrcode img {
+    display: block;
+    max-width: 100%;
+}
+
+.info {
+    margin-top: 15px;
+    padding: 12px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    line-height: 1.7;
+    text-align: left;
+}
+
+#shareBox {
+    display: none;
+    margin-top: 20px;
+    padding: 15px;
+    background: #f5f5f5;
+    border-radius: 10px;
+    text-align: center;
+}
+
+#shareQRCode {
+    display: inline-block;
+    padding: 10px;
+    background: white;
+}
+
+#shareQRCode img {
+    max-width: 100%;
+}
+
+#shareURL {
+    margin-top: 10px;
+    font-size: 13px;
+    word-break: break-all;
+    color: #555;
+    line-height: 1.5;
+}
+
+</style>
 
 </head>
 
 
 <body>
 
-
 <div class="container">
 
+<h2>💳 Tạo QR VietQR</h2>
 
-    <h2>💳 Tạo QR VietQR</h2>
 
+<!-- =====================================================
+     THÔNG TIN NGƯỜI NHẬN
+===================================================== -->
 
-    <!-- ================================= -->
-    <!-- THONG TIN NGUOI NHAN -->
-    <!-- ================================= -->
+<div class="section-title">
+    Thông tin người nhận
+</div>
 
-    <div class="section-title">
-        Thông tin người nhận
-    </div>
 
+<label>Ngân hàng</label>
 
-    <label>Ngân hàng</label>
+<select id="bank">
 
-    <select id="bank">
+    <option value="970415">VietinBank</option>
+    <option value="970436">Vietcombank</option>
+    <option value="970422">MBBank</option>
+    <option value="970418">BIDV</option>
+    <option value="970405">Agribank</option>
+    <option value="970403">Sacombank</option>
+    <option value="970407">Techcombank</option>
+    <option value="970432">VPBank</option>
+    <option value="970423">TPBank</option>
+    <option value="970426">ACB</option>
+    <option value="970437">HDBank</option>
+    <option value="970448">OCB</option>
+    <option value="970441">VIB</option>
+    <option value="970443">SHB</option>
+    <option value="970431">Eximbank</option>
+    <option value="970400">SaigonBank</option>
+    <option value="970429">SCB</option>
 
-        <option value="970415">
-            VietinBank
-        </option>
+</select>
 
-        <option value="970436">
-            Vietcombank
-        </option>
 
-        <option value="970422">
-            MBBank
-        </option>
+<label>Số tài khoản</label>
 
-        <option value="970418">
-            BIDV
-        </option>
+<input
+    type="text"
+    id="account"
+    inputmode="numeric"
+    placeholder="Ví dụ: 0123456789"
+>
 
-        <option value="970405">
-            Agribank
-        </option>
 
-        <option value="970403">
-            Sacombank
-        </option>
+<label>Tên người nhận</label>
 
-        <option value="970407">
-            Techcombank
-        </option>
+<input
+    type="text"
+    id="name"
+    placeholder="Ví dụ: NGUYEN BA TIN"
+>
 
-        <option value="970432">
-            VPBank
-        </option>
 
-        <option value="970423">
-            TPBank
-        </option>
+<!-- =====================================================
+     TÍNH TIỀN
+===================================================== -->
 
-        <option value="970426">
-            ACB
-        </option>
+<div class="section-title">
+    💰 Tính tiền
+</div>
 
-        <option value="970437">
-            HDBank
-        </option>
 
-        <option value="970448">
-            OCB
-        </option>
+<div class="calculator">
 
-        <option value="970441">
-            VIB
-        </option>
+<label>
+    Nhập số tiền hoặc đơn giá × số lượng
+</label>
 
-        <option value="970454">
-            VietCapitalBank
-        </option>
 
-        <option value="970438">
-            BaoVietBank
-        </option>
+<textarea
+    id="priceList"
+    class="price-input"
+    placeholder="Ví dụ:
+400000*5
+300000
+150000*2
+50000"
+></textarea>
 
-        <option value="970452">
-            KienlongBank
-        </option>
 
-        <option value="970443">
-            SHB
-        </option>
+<div class="calc-note">
 
-        <option value="970431">
-            Eximbank
-        </option>
+Có thể nhập:
 
-        <option value="970400">
-            SaigonBank
-        </option>
+<br>
 
-        <option value="970429">
-            SCB
-        </option>
+<b>400000*5</b>
+→ 400.000 × 5
 
-    </select>
+<br>
 
+<b>300000</b>
+→ 300.000
 
-    <label>Số tài khoản</label>
+<br>
 
-    <input
-        type="text"
-        id="account"
-        placeholder="Ví dụ: 0123456789"
-    >
+Có thể nhập nhiều dòng.
 
+<br>
 
-    <label>Tên người nhận</label>
-
-    <input
-        type="text"
-        id="name"
-        placeholder="Ví dụ: NGUYEN BA TIN"
-    >
-
-
-    <!-- ================================= -->
-    <!-- THONG TIN GIAO DICH -->
-    <!-- ================================= -->
-
-    <div class="section-title">
-        Thông tin giao dịch
-    </div>
-
-
-    <label>Số tiền (VNĐ)</label>
-
-    <input
-        type="number"
-        id="amount"
-        placeholder="Ví dụ: 100000"
-        min="0"
-    >
-
-
-    <label>Nội dung chuyển khoản</label>
-
-    <input
-        type="text"
-        id="content"
-        placeholder="Ví dụ: THANH TOAN HD001"
-    >
-
-
-    <!-- ================================= -->
-    <!-- NUT TAO QR -->
-    <!-- ================================= -->
-
-    <button
-        id="btnCreate"
-        onclick="createQR()"
-    >
-        TẠO QR
-    </button>
-
-
-    <!-- Thong bao luu -->
-
-    <div
-        id="savedMessage"
-        class="saved"
-    >
-        ✓ Thông tin đã được lưu trên trình duyệt
-    </div>
-
-
-    <!-- ================================= -->
-    <!-- KHU VUC QR THANH TOAN -->
-    <!-- ================================= -->
-
-    <div class="qr-box">
-
-
-        <div id="qrcode"></div>
-
-
-        <div
-            id="info"
-            class="info"
-            style="display:none;"
-        ></div>
-
-
-        <button
-            id="btnDownload"
-            onclick="downloadQR()"
-        >
-            TẢI QR THANH TOÁN
-        </button>
-
-
-        <button
-            id="btnClear"
-            onclick="clearSavedInfo()"
-        >
-            XÓA THÔNG TIN ĐÃ LƯU
-        </button>
-
-
-        <!-- ================================= -->
-        <!-- NUT CHIA SE TRANG WEB -->
-        <!-- ================================= -->
-
-        <button
-            id="btnShare"
-            onclick="showShareQR()"
-        >
-            📱 CHIA SẺ TRANG WEB
-        </button>
-
-
-        <!-- ================================= -->
-        <!-- QR CHIA SE TRANG WEB -->
-        <!-- ================================= -->
-
-        <div id="shareBox">
-
-
-            <div
-                style="
-                    font-weight:bold;
-                    margin-bottom:10px;
-                "
-            >
-                📱 Quét mã để mở trang web
-            </div>
-
-
-            <div id="shareQRCode"></div>
-
-
-            <div id="shareURL"></div>
-
-
-            <button
-                id="btnCloseShare"
-                onclick="closeShareQR()"
-            >
-                ĐÓNG
-            </button>
-
-
-        </div>
-
-
-    </div>
-
+Dấu chấm hàng nghìn sẽ tự động thêm.
 
 </div>
 
 
+<button
+    id="btnCalculate"
+    onclick="calculateMoney()"
+>
+    🧮 TÍNH TIỀN
+</button>
+
+
+<div
+    id="calcResult"
+    class="calc-result"
+    style="display:none;"
+></div>
+
+</div>
+
+
+<!-- =====================================================
+     SỐ TIỀN
+===================================================== -->
+
+<label>Số tiền (VNĐ)</label>
+
+<input
+    type="text"
+    id="amount"
+    inputmode="numeric"
+    placeholder="Tổng tiền sẽ tự điền vào đây"
+>
+
+
+<!-- =====================================================
+     NỘI DUNG
+===================================================== -->
+
+<label>Nội dung chuyển khoản</label>
+
+<input
+    type="text"
+    id="content"
+    placeholder="Ví dụ: THANH TOAN HD001"
+>
+
+
+
+
+<div
+    id="savedMessage"
+    class="saved"
+>
+    ✓ Thông tin đã được lưu trên trình duyệt
+</div>
+
+
+<!-- =====================================================
+     QR THANH TOÁN
+===================================================== -->
+
+<div class="qr-box">
+
+<div id="qrcode"></div>
+
+
+<div
+    id="info"
+    class="info"
+    style="display:none;"
+></div>
+
+<!-- =====================================================
+     NÚT TẠO QR
+===================================================== -->
+
+<button
+    id="btnCreate"
+    onclick="createQR()"
+>
+    TẠO QR
+</button>
+
+<button
+    id="btnDownload"
+    onclick="downloadQR()"
+>
+    TẢI QR THANH TOÁN
+</button>
+
+
+<button
+    id="btnShare"
+    onclick="showShareQR()"
+>
+    📱 CHIA SẺ TRANG WEB
+</button>
+
+
+<button
+    id="btnClear"
+    onclick="clearSavedInfo()"
+>
+    XÓA THÔNG TIN ĐÃ LƯU
+</button>
+
+
+<!-- =====================================================
+     QR CHIA SẺ TRANG WEB
+===================================================== -->
+
+<div id="shareBox">
+
+<div
+    style="
+        font-weight:bold;
+        margin-bottom:10px;
+    "
+>
+    📱 Quét mã để mở trang web
+</div>
+
+
+<div id="shareQRCode"></div>
+
+
+<div id="shareURL"></div>
+
+
+<button
+    id="btnCloseShare"
+    onclick="closeShareQR()"
+>
+    ĐÓNG
+</button>
+
+</div>
+
+
+</div>
+
+</div>
+
 
 <script>
 
-
-/*
-==================================================
-KEY LUU DU LIEU
-==================================================
-*/
+/* =====================================================
+   CẤU HÌNH
+===================================================== */
 
 const STORAGE_KEY = "vietqr_info";
 
 
+/* =====================================================
+   FORMAT TIỀN
+===================================================== */
 
-/*
-==================================================
-LUU THONG TIN
-==================================================
-*/
+function formatMoney(value) {
+
+    if (
+        value === "" ||
+        value === null ||
+        value === undefined
+    ) {
+        return "";
+    }
+
+    const number = Number(value);
+
+    if (!Number.isFinite(number)) {
+        return "";
+    }
+
+    return number.toLocaleString("vi-VN");
+}
+
+
+/* =====================================================
+   BỎ DẤU CHẤM
+
+   1.000.000
+   →
+   1000000
+===================================================== */
+
+function cleanNumber(value) {
+
+    return String(value)
+        .replace(/\./g, "")
+        .replace(/,/g, "")
+        .replace(/[^\d]/g, "");
+}
+
+
+/* =====================================================
+   FORMAT MỘT DÒNG
+===================================================== */
+
+function formatOneLine(line) {
+
+    const trimmed = line.trim();
+
+
+    if (!trimmed) {
+        return "";
+    }
+
+
+    /* -----------------------------------------------
+       Có dấu *
+    ------------------------------------------------ */
+
+    if (trimmed.includes("*")) {
+
+        const pos =
+            trimmed.indexOf("*");
+
+
+        let price =
+            trimmed
+                .substring(0, pos)
+                .replace(/\D/g, "");
+
+
+        let quantity =
+            trimmed
+                .substring(pos + 1)
+                .replace(/\D/g, "");
+
+
+        if (!price) {
+            return line;
+        }
+
+
+        /*
+            Cho phép người dùng đang nhập:
+
+            400000*
+
+            chưa nhập số lượng.
+        */
+
+        if (quantity === "") {
+
+            return (
+                Number(price)
+                    .toLocaleString("vi-VN")
+                +
+                "*"
+            );
+        }
+
+
+        return (
+            Number(price)
+                .toLocaleString("vi-VN")
+            +
+            "*"
+            +
+            quantity
+        );
+    }
+
+
+    /* -----------------------------------------------
+       Chỉ có số
+    ------------------------------------------------ */
+
+    const number =
+        trimmed.replace(/\D/g, "");
+
+
+    if (!number) {
+        return line;
+    }
+
+
+    return Number(number)
+        .toLocaleString("vi-VN");
+}
+
+
+/* =====================================================
+   TEXTAREA
+===================================================== */
+
+const priceList =
+    document.getElementById(
+        "priceList"
+    );
+
+
+/* =====================================================
+   XỬ LÝ NHẬP TIỀN
+
+   QUAN TRỌNG:
+
+   Chỉ format dòng hiện tại.
+
+   Không format toàn bộ textarea.
+
+   Vì vậy Enter hoạt động bình thường.
+===================================================== */
+
+priceList.addEventListener(
+    "input",
+    function() {
+
+        const textarea = this;
+
+        const value =
+            textarea.value;
+
+        const cursor =
+            textarea.selectionStart;
+
+
+        /*
+            Nếu vừa nhấn Enter:
+
+            Tuyệt đối không thay đổi
+            nội dung textarea.
+        */
+
+        if (
+            value[cursor - 1] === "\n"
+        ) {
+
+            saveInfo();
+
+            return;
+        }
+
+
+        /*
+            Tìm đầu dòng hiện tại.
+        */
+
+        const lineStart =
+            value.lastIndexOf(
+                "\n",
+                cursor - 1
+            ) + 1;
+
+
+        /*
+            Tìm cuối dòng hiện tại.
+        */
+
+        let lineEnd =
+            value.indexOf(
+                "\n",
+                cursor
+            );
+
+
+        if (lineEnd === -1) {
+
+            lineEnd =
+                value.length;
+        }
+
+
+        /*
+            Lấy dòng hiện tại.
+        */
+
+        const currentLine =
+            value.substring(
+                lineStart,
+                lineEnd
+            );
+
+
+        /*
+            Format dòng.
+        */
+
+        const formattedLine =
+            formatOneLine(
+                currentLine
+            );
+
+
+        /*
+            Không có thay đổi.
+        */
+
+        if (
+            formattedLine === currentLine
+        ) {
+
+            saveInfo();
+
+            return;
+        }
+
+
+        /*
+            Thay đúng dòng hiện tại.
+        */
+
+        const newValue =
+
+            value.substring(
+                0,
+                lineStart
+            )
+
+            +
+
+            formattedLine
+
+            +
+
+            value.substring(
+                lineEnd
+            );
+
+
+        /*
+            Độ dài thay đổi.
+        */
+
+        const difference =
+            formattedLine.length -
+            currentLine.length;
+
+
+        const newCursor =
+            Math.max(
+                lineStart,
+                cursor + difference
+            );
+
+
+        textarea.value =
+            newValue;
+
+
+        /*
+            Đưa con trỏ về vị trí cũ.
+        */
+
+        try {
+
+            textarea.setSelectionRange(
+                newCursor,
+                newCursor
+            );
+
+        }
+        catch (e) {}
+
+
+        saveInfo();
+
+    }
+);
+
+
+/* =====================================================
+   Ô SỐ TIỀN
+
+   Tự thêm dấu chấm.
+===================================================== */
+
+const amountInput =
+    document.getElementById(
+        "amount"
+    );
+
+
+amountInput.addEventListener(
+    "input",
+    function() {
+
+        const oldValue =
+            this.value;
+
+        const cursor =
+            this.selectionStart;
+
+
+        const raw =
+            cleanNumber(
+                oldValue
+            );
+
+
+        if (!raw) {
+
+            this.value = "";
+
+            saveInfo();
+
+            return;
+        }
+
+
+        const formatted =
+            Number(raw)
+                .toLocaleString(
+                    "vi-VN"
+                );
+
+
+        /*
+            Đếm số chữ số trước
+            con trỏ.
+        */
+
+        const digitsBefore =
+            oldValue
+                .substring(
+                    0,
+                    cursor
+                )
+                .replace(
+                    /\D/g,
+                    ""
+                )
+                .length;
+
+
+        this.value =
+            formatted;
+
+
+        let newCursor = 0;
+
+        let digits = 0;
+
+
+        while (
+            newCursor <
+                formatted.length
+            &&
+            digits <
+                digitsBefore
+        ) {
+
+            if (
+                /\d/.test(
+                    formatted[newCursor]
+                )
+            ) {
+
+                digits++;
+            }
+
+            newCursor++;
+        }
+
+
+        try {
+
+            this.setSelectionRange(
+                newCursor,
+                newCursor
+            );
+
+        }
+        catch (e) {}
+
+
+        saveInfo();
+
+    }
+);
+
+
+/* =====================================================
+   TÍNH TIỀN
+===================================================== */
+
+function calculateMoney() {
+
+    const text =
+        priceList.value.trim();
+
+
+    if (!text) {
+
+        alert(
+            "Vui lòng nhập số tiền!"
+        );
+
+        return;
+    }
+
+
+    /*
+        Chỉ tách theo Enter.
+
+        Ví dụ:
+
+        400000*5
+        300000
+        150000*2
+        50000
+    */
+
+    const lines =
+        text
+            .split(/\r?\n/)
+            .map(
+                line => line.trim()
+            )
+            .filter(
+                line => line !== ""
+            );
+
+
+    let total = 0;
+
+    const details = [];
+
+
+    /*
+        Duyệt từng dòng.
+    */
+
+    for (
+        let i = 0;
+        i < lines.length;
+        i++
+    ) {
+
+        const line =
+            lines[i];
+
+
+        /* ==========================================
+           CÓ DẤU *
+
+           400.000*5
+        ========================================== */
+
+        if (
+            line.includes("*")
+        ) {
+
+            const parts =
+                line.split("*");
+
+
+            if (
+                parts.length !== 2
+            ) {
+
+                alert(
+                    "Dòng " +
+                    (i + 1) +
+                    " không đúng dạng."
+                );
+
+                return;
+            }
+
+
+            const priceText =
+                cleanNumber(
+                    parts[0]
+                );
+
+
+            const quantityText =
+                cleanNumber(
+                    parts[1]
+                );
+
+
+            if (
+                !priceText ||
+                !quantityText
+            ) {
+
+                alert(
+                    "Dòng " +
+                    (i + 1) +
+                    " phải có dạng:\n\n" +
+                    "400000*5"
+                );
+
+                return;
+            }
+
+
+            const price =
+                Number(priceText);
+
+
+            const quantity =
+                Number(quantityText);
+
+
+            if (
+                !Number.isFinite(price) ||
+                !Number.isFinite(quantity)
+            ) {
+
+                alert(
+                    "Dòng " +
+                    (i + 1) +
+                    " không hợp lệ."
+                );
+
+                return;
+            }
+
+
+            const lineTotal =
+                price * quantity;
+
+
+            total +=
+                lineTotal;
+
+
+            details.push(
+
+                formatMoney(price)
+                +
+                " × "
+                +
+                formatMoney(quantity)
+                +
+                " = "
+                +
+                formatMoney(lineTotal)
+                +
+                " đ"
+
+            );
+
+        }
+
+
+        /* ==========================================
+           CHỈ CÓ MỘT SỐ
+
+           300000
+        ========================================== */
+
+        else {
+
+            const numberText =
+                cleanNumber(
+                    line
+                );
+
+
+            if (!numberText) {
+
+                alert(
+                    "Dòng " +
+                    (i + 1) +
+                    " không có số tiền."
+                );
+
+                return;
+            }
+
+
+            const number =
+                Number(numberText);
+
+
+            if (
+                !Number.isFinite(number)
+            ) {
+
+                alert(
+                    "Dòng " +
+                    (i + 1) +
+                    " không hợp lệ."
+                );
+
+                return;
+            }
+
+
+            total +=
+                number;
+
+
+            details.push(
+
+                formatMoney(number)
+                +
+                " = "
+                +
+                formatMoney(number)
+                +
+                " đ"
+
+            );
+        }
+
+    }
+
+
+    /*
+        Làm tròn.
+    */
+
+    total =
+        Math.round(
+            total * 100
+        ) / 100;
+
+
+    /*
+        Đưa tổng vào ô Số tiền.
+    */
+
+    amountInput.value =
+        formatMoney(total);
+
+
+    /*
+        Hiển thị kết quả.
+    */
+
+    const resultBox =
+        document.getElementById(
+            "calcResult"
+        );
+
+
+    resultBox.style.display =
+        "block";
+
+
+    resultBox.innerHTML =
+
+        "<b>Chi tiết:</b><br>" +
+
+        details.join("<br>") +
+
+        '<div class="calc-total">' +
+
+        "TỔNG TIỀN: " +
+
+        formatMoney(total) +
+
+        " đ" +
+
+        "</div>";
+
+
+    /*
+        Sau khi tính mới chuẩn hóa
+        toàn bộ nội dung.
+
+        Không ảnh hưởng lúc nhập.
+    */
+
+    priceList.value =
+        formatPriceList(
+            priceList.value
+        );
+
+
+    saveInfo();
+
+}
+
+
+/* =====================================================
+   FORMAT TOÀN BỘ TEXTAREA
+===================================================== */
+
+function formatPriceList(text) {
+
+    return text
+        .split(/\r?\n/)
+        .map(formatOneLine)
+        .join("\n");
+}
+
+
+/* =====================================================
+   LƯU THÔNG TIN
+===================================================== */
 
 function saveInfo() {
 
     const data = {
 
         bank:
-            document.getElementById("bank").value,
+            document
+                .getElementById("bank")
+                .value,
 
         account:
             document
@@ -591,8 +1240,7 @@ function saveInfo() {
                 .trim(),
 
         amount:
-            document
-                .getElementById("amount")
+            amountInput
                 .value
                 .trim(),
 
@@ -600,23 +1248,18 @@ function saveInfo() {
             document
                 .getElementById("content")
                 .value
-                .trim()
+                .trim(),
 
+        priceList:
+            priceList.value
     };
 
 
     localStorage.setItem(
-
         STORAGE_KEY,
-
         JSON.stringify(data)
-
     );
 
-
-    /*
-     * Hien thong bao
-     */
 
     const message =
         document.getElementById(
@@ -628,28 +1271,27 @@ function saveInfo() {
         "block";
 
 
-    setTimeout(
-
-        function() {
-
-            message.style.display =
-                "none";
-
-        },
-
-        2000
-
+    clearTimeout(
+        window.saveTimer
     );
 
+
+    window.saveTimer =
+        setTimeout(
+            function() {
+
+                message.style.display =
+                    "none";
+
+            },
+            1000
+        );
 }
 
 
-
-/*
-==================================================
-DOC THONG TIN DA LUU
-==================================================
-*/
+/* =====================================================
+   ĐỌC THÔNG TIN ĐÃ LƯU
+===================================================== */
 
 function loadInfo() {
 
@@ -660,9 +1302,7 @@ function loadInfo() {
 
 
     if (!data) {
-
         return;
-
     }
 
 
@@ -672,73 +1312,87 @@ function loadInfo() {
             JSON.parse(data);
 
 
-        if (info.bank !== undefined) {
+        if (
+            info.bank !== undefined
+        ) {
 
             document.getElementById(
                 "bank"
-            ).value = info.bank;
-
+            ).value =
+                info.bank;
         }
 
 
-        if (info.account !== undefined) {
+        if (
+            info.account !== undefined
+        ) {
 
             document.getElementById(
                 "account"
-            ).value = info.account;
-
+            ).value =
+                info.account;
         }
 
 
-        if (info.name !== undefined) {
+        if (
+            info.name !== undefined
+        ) {
 
             document.getElementById(
                 "name"
-            ).value = info.name;
-
+            ).value =
+                info.name;
         }
 
 
-        if (info.amount !== undefined) {
+        if (
+            info.amount
+        ) {
 
-            document.getElementById(
-                "amount"
-            ).value = info.amount;
-
+            amountInput.value =
+                formatMoney(
+                    cleanNumber(
+                        info.amount
+                    )
+                );
         }
 
 
-        if (info.content !== undefined) {
+        if (
+            info.content !== undefined
+        ) {
 
             document.getElementById(
                 "content"
-            ).value = info.content;
+            ).value =
+                info.content;
+        }
 
+
+        if (
+            info.priceList !== undefined
+        ) {
+
+            priceList.value =
+                info.priceList;
         }
 
     }
-
     catch (error) {
 
         console.log(
-            "Khong doc duoc thong tin da luu",
+            "Lỗi đọc dữ liệu:",
             error
         );
-
     }
-
 }
 
 
-
-/*
-==================================================
-XOA THONG TIN
-==================================================
-*/
+/* =====================================================
+   XÓA THÔNG TIN ĐÃ LƯU
+===================================================== */
 
 function clearSavedInfo() {
-
 
     if (
         !confirm(
@@ -747,7 +1401,6 @@ function clearSavedInfo() {
     ) {
 
         return;
-
     }
 
 
@@ -771,14 +1424,15 @@ function clearSavedInfo() {
     ).value = "";
 
 
-    document.getElementById(
-        "amount"
-    ).value = "";
+    amountInput.value = "";
 
 
     document.getElementById(
         "content"
     ).value = "";
+
+
+    priceList.value = "";
 
 
     document.getElementById(
@@ -788,73 +1442,72 @@ function clearSavedInfo() {
 
     document.getElementById(
         "info"
-    ).style.display = "none";
+    ).style.display =
+        "none";
 
 
     document.getElementById(
         "btnDownload"
-    ).style.display = "none";
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "calcResult"
+    ).style.display =
+        "none";
 
 
     alert(
         "Đã xóa thông tin đã lưu!"
     );
-
 }
 
 
-
-/*
-==================================================
-TAO QR VIETQR
-==================================================
-*/
+/* =====================================================
+   TẠO VIETQR
+===================================================== */
 
 function createQR() {
 
-
     const bank =
-        document.getElementById(
-            "bank"
-        ).value;
+        document
+            .getElementById("bank")
+            .value;
 
 
     const account =
-        document.getElementById(
-            "account"
-        )
-        .value
-        .trim();
+        document
+            .getElementById("account")
+            .value
+            .trim();
 
 
     const name =
-        document.getElementById(
-            "name"
-        )
-        .value
-        .trim();
-
-
-    const amount =
-        document.getElementById(
-            "amount"
-        )
-        .value
-        .trim();
-
-
-    const content =
-        document.getElementById(
-            "content"
-        )
-        .value
-        .trim();
-
+        document
+            .getElementById("name")
+            .value
+            .trim();
 
 
     /*
-     * Kiem tra STK
-     */
+        1.000.000
+        →
+        1000000
+    */
+
+    const amount =
+        cleanNumber(
+            amountInput.value
+        );
+
+
+    const content =
+        document
+            .getElementById("content")
+            .value
+            .trim();
+
 
     if (!account) {
 
@@ -862,19 +1515,9 @@ function createQR() {
             "Vui lòng nhập số tài khoản!"
         );
 
-        document.getElementById(
-            "account"
-        ).focus();
-
         return;
-
     }
 
-
-
-    /*
-     * Kiem tra ten
-     */
 
     if (!name) {
 
@@ -882,125 +1525,71 @@ function createQR() {
             "Vui lòng nhập tên người nhận!"
         );
 
-        document.getElementById(
-            "name"
-        ).focus();
-
         return;
-
     }
 
 
-
     /*
-     * Luu thong tin
-     */
-
-    saveInfo();
-
-
-
-    /*
-     * Tao URL VietQR
-     */
+        Tạo URL VietQR.
+    */
 
     let url =
-
         "https://img.vietqr.io/image/" +
-
         bank +
-
         "-" +
-
         account +
-
         "-compact2.jpg";
-
 
 
     const params = [];
 
 
-
-    /*
-     * So tien
-     */
-
     if (amount) {
 
         params.push(
-
             "amount=" +
-
             encodeURIComponent(
                 amount
             )
-
         );
-
     }
 
-
-
-    /*
-     * Noi dung
-     */
 
     if (content) {
 
         params.push(
-
             "addInfo=" +
-
             encodeURIComponent(
                 content
             )
-
         );
-
     }
 
-
-
-    /*
-     * Ten nguoi nhan
-     */
 
     if (name) {
 
         params.push(
-
             "accountName=" +
-
             encodeURIComponent(
                 name
             )
-
         );
-
     }
 
 
-
-    /*
-     * Them tham so
-     */
-
-    if (params.length > 0) {
+    if (
+        params.length
+    ) {
 
         url +=
-
             "?" +
-
             params.join("&");
-
     }
 
 
-
     /*
-     * Xoa QR cu
-     */
+        Xóa QR cũ.
+    */
 
     const qr =
         document.getElementById(
@@ -1011,10 +1600,9 @@ function createQR() {
     qr.innerHTML = "";
 
 
-
     /*
-     * Tao anh QR
-     */
+        Tạo ảnh QR.
+    */
 
     const img =
         document.createElement(
@@ -1022,7 +1610,8 @@ function createQR() {
         );
 
 
-    img.src = url;
+    img.src =
+        url;
 
 
     img.alt =
@@ -1037,11 +1626,6 @@ function createQR() {
         "100%";
 
 
-
-    /*
-     * Tai QR thanh cong
-     */
-
     img.onload =
         function() {
 
@@ -1049,35 +1633,27 @@ function createQR() {
                 "btnDownload"
             ).style.display =
                 "block";
-
         };
 
-
-
-    /*
-     * Loi tai QR
-     */
 
     img.onerror =
         function() {
 
             alert(
-                "Không thể tạo VietQR.\n\n" +
-                "Vui lòng kiểm tra lại ngân hàng " +
-                "và số tài khoản."
+                "Không thể tạo VietQR. " +
+                "Vui lòng kiểm tra lại ngân hàng và số tài khoản."
             );
-
         };
 
 
-
-    qr.appendChild(img);
-
+    qr.appendChild(
+        img
+    );
 
 
     /*
-     * Hien thong tin
-     */
+        Hiển thị thông tin.
+    */
 
     const info =
         document.getElementById(
@@ -1092,70 +1668,50 @@ function createQR() {
     info.innerHTML =
 
         "<b>Người nhận:</b> " +
-
         escapeHTML(name) +
 
         "<br>" +
 
-
         "<b>Số tài khoản:</b> " +
-
         escapeHTML(account) +
 
         "<br>" +
 
-
         "<b>Số tiền:</b> " +
 
         (
-
             amount
-
             ?
-
-            Number(amount)
-                .toLocaleString(
-                    "vi-VN"
-                ) +
+            formatMoney(amount) +
             " VNĐ"
-
             :
-
             "Không cố định"
+        )
 
-        ) +
+        +
 
         "<br>" +
-
 
         "<b>Nội dung:</b> " +
 
         (
-
             content
-
             ?
-
             escapeHTML(content)
-
             :
-
             "Không có"
-
         );
 
+
+    saveInfo();
 }
 
 
-
-/*
-==================================================
-TAI QR THANH TOAN
-==================================================
-*/
+/* =====================================================
+   TẢI QR
+===================================================== */
 
 function downloadQR() {
-
 
     const img =
         document.querySelector(
@@ -1170,102 +1726,40 @@ function downloadQR() {
         );
 
         return;
-
     }
 
 
-    const canvas =
+    const link =
         document.createElement(
-            "canvas"
+            "a"
         );
 
 
-    const ctx =
-        canvas.getContext(
-            "2d"
-        );
-
-
-    const image =
-        new Image();
-
-
-    image.crossOrigin =
-        "anonymous";
-
-
-    image.onload =
-        function() {
-
-
-            canvas.width =
-                image.naturalWidth;
-
-
-            canvas.height =
-                image.naturalHeight;
-
-
-            ctx.drawImage(
-
-                image,
-
-                0,
-
-                0
-
-            );
-
-
-            const link =
-                document.createElement(
-                    "a"
-                );
-
-
-            link.download =
-                "VietQR.png";
-
-
-            link.href =
-                canvas.toDataURL(
-                    "image/png"
-                );
-
-
-            link.click();
-
-        };
-
-
-    image.src =
+    link.href =
         img.src;
 
+
+    link.download =
+        "VietQR.png";
+
+
+    link.target =
+        "_blank";
+
+
+    link.click();
 }
 
 
-
-/*
-==================================================
-TAO QR CHIA SE TRANG WEB
-==================================================
-*/
+/* =====================================================
+   CHIA SẺ TRANG WEB BẰNG QR
+===================================================== */
 
 function showShareQR() {
-
-
-    /*
-     * Lay URL hien tai
-     */
 
     const url =
         window.location.href;
 
-
-
-    /*
-     * Lay khu vuc QR
-     */
 
     const qr =
         document.getElementById(
@@ -1273,89 +1767,63 @@ function showShareQR() {
         );
 
 
-    /*
-     * Xoa QR cu
-     */
-
     qr.innerHTML = "";
 
 
+    const img =
+        document.createElement(
+            "img"
+        );
 
-    /*
-     * Tao QR
-     */
 
-    new QRCode(
+    img.src =
+        "https://api.qrserver.com/v1/create-qr-code/?" +
+        "size=250x250&data=" +
+        encodeURIComponent(url);
 
-        qr,
 
-        {
+    img.alt =
+        "QR chia sẻ trang web";
 
-            text: url,
 
-            width: 250,
-
-            height: 250,
-
-            correctLevel:
-                QRCode.CorrectLevel.H
-
-        }
-
+    qr.appendChild(
+        img
     );
 
 
-
-    /*
-     * Hien URL
-     */
-
     document.getElementById(
         "shareURL"
-    ).textContent = url;
+    ).textContent =
+        url;
 
-
-
-    /*
-     * Hien khung QR
-     */
 
     document.getElementById(
         "shareBox"
     ).style.display =
         "block";
-
 }
 
 
-
-/*
-==================================================
-DONG QR CHIA SE
-==================================================
-*/
+/* =====================================================
+   ĐÓNG QR CHIA SẺ
+===================================================== */
 
 function closeShareQR() {
-
 
     document.getElementById(
         "shareBox"
     ).style.display =
         "none";
-
 }
 
 
-
-/*
-==================================================
-BAO VE HTML
-==================================================
-*/
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
 
 function escapeHTML(text) {
 
-    return text
+    return String(text)
 
         .replace(
             /&/g,
@@ -1381,31 +1849,23 @@ function escapeHTML(text) {
             /'/g,
             "&#039;"
         );
-
 }
 
 
-
-/*
-==================================================
-KHI MO TRANG
-==================================================
-*/
+/* =====================================================
+   KHỞI ĐỘNG
+===================================================== */
 
 window.addEventListener(
-
     "DOMContentLoaded",
-
     function() {
 
         loadInfo();
 
     }
-
 );
 
 </script>
-
 
 </body>
 
