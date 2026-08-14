@@ -1,27 +1,946 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <title>XH</title>
+
+    <title>Tạo QR VietQR</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #f2f4f7;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #1677ff;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            margin-top: 15px;
+            border: 0;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #btnCreate {
+            background: #1677ff;
+            color: white;
+        }
+
+        #btnCreate:hover {
+            background: #095fc7;
+        }
+
+        #btnDownload {
+            background: #16a34a;
+            color: white;
+            display: none;
+        }
+
+        #btnClear {
+            background: #dc2626;
+            color: white;
+        }
+
+        #btnClear:hover {
+            background: #b91c1c;
+        }
+
+        .qr-box {
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        #qrcode {
+            display: inline-block;
+            padding: 10px;
+            background: white;
+        }
+
+        #qrcode img {
+            display: block;
+            max-width: 100%;
+        }
+
+        .info {
+            margin-top: 15px;
+            padding: 12px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            line-height: 1.7;
+            text-align: left;
+        }
+
+        .saved {
+            margin-top: 10px;
+            padding: 8px;
+            text-align: center;
+            color: #16a34a;
+            font-size: 14px;
+            display: none;
+        }
+
+        .section-title {
+            margin-top: 25px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+            font-size: 17px;
+        }
+    </style>
 </head>
+
 
 <body>
 
-    <div class="center">
-        <input id="nd" type="text" placeholder="Nhập text..." onkeyup="TaoQRcode()">
-        <div class="qrcode" id="qrcode"></div>
-        <button onclick="TaiXuong()">
-            Tải Xuống
-        </button>
+<div class="container">
+
+    <h2>💳 Tạo QR VietQR</h2>
+
+
+    <!-- ============================= -->
+    <!-- THONG TIN NGUOI NHAN -->
+    <!-- ============================= -->
+
+    <div class="section-title">
+        Thông tin người nhận
     </div>
 
 
+    <label>Ngân hàng</label>
 
-    <script src="qrcode.js"></script>
-    <script src="main.js"></script>
+    <select id="bank">
+
+        <option value="970415">VietinBank</option>
+
+        <option value="970436">Vietcombank</option>
+
+        <option value="970422">MBBank</option>
+
+        <option value="970418">BIDV</option>
+
+        <option value="970405">Agribank</option>
+
+        <option value="970403">Sacombank</option>
+
+        <option value="970407">Techcombank</option>
+
+        <option value="970432">VPBank</option>
+
+        <option value="970423">TPBank</option>
+
+        <option value="970426">ACB</option>
+
+        <option value="970437">HDBank</option>
+
+        <option value="970448">OCB</option>
+
+        <option value="970441">VIB</option>
+
+        <option value="970454">VietCapitalBank</option>
+
+        <option value="970438">BaoVietBank</option>
+
+        <option value="970452">KienlongBank</option>
+
+        <option value="970443">SHB</option>
+
+        <option value="970431">Eximbank</option>
+
+        <option value="970400">SaigonBank</option>
+
+        <option value="970429">SCB</option>
+
+    </select>
+
+
+    <label>Số tài khoản</label>
+
+    <input
+        type="text"
+        id="account"
+        placeholder="Ví dụ: 0123456789"
+    >
+
+
+    <label>Tên người nhận</label>
+
+    <input
+        type="text"
+        id="name"
+        placeholder="Ví dụ: NGUYEN BA TIN"
+    >
+
+
+    <!-- ============================= -->
+    <!-- THONG TIN GIAO DICH -->
+    <!-- ============================= -->
+
+    <div class="section-title">
+        Thông tin giao dịch
+    </div>
+
+
+    <label>Số tiền (VNĐ)</label>
+
+    <input
+        type="number"
+        id="amount"
+        placeholder="Ví dụ: 100000"
+        min="0"
+    >
+
+
+    <label>Nội dung chuyển khoản</label>
+
+    <input
+        type="text"
+        id="content"
+        placeholder="Ví dụ: THANH TOAN HD001"
+    >
+
+
+    <!-- ============================= -->
+    <!-- NUT TAO QR -->
+    <!-- ============================= -->
+
+    <button
+        id="btnCreate"
+        onclick="createQR()"
+    >
+        TẠO QR
+    </button>
+
+
+    <!-- Thong bao da luu -->
+
+    <div
+        id="savedMessage"
+        class="saved"
+    >
+        ✓ Thông tin đã được lưu trên trình duyệt
+    </div>
+
+
+    <!-- ============================= -->
+    <!-- HIEN THI QR -->
+    <!-- ============================= -->
+
+    <div class="qr-box">
+
+        <div id="qrcode"></div>
+
+
+        <div
+            id="info"
+            class="info"
+            style="display:none;"
+        ></div>
+
+
+        <button
+            id="btnDownload"
+            onclick="downloadQR()"
+        >
+            TẢI QR
+        </button>
+
+
+        <button
+            id="btnClear"
+            onclick="clearSavedInfo()"
+        >
+            XÓA THÔNG TIN ĐÃ LƯU
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+/*
+==================================================
+LUU THONG TIN
+==================================================
+*/
+
+const STORAGE_KEY = "vietqr_info";
+
+
+/*
+==================================================
+LUU THONG TIN VAO TRINH DUYET
+==================================================
+*/
+
+function saveInfo() {
+
+    const data = {
+
+        bank:
+            document.getElementById("bank").value,
+
+        account:
+            document.getElementById("account").value.trim(),
+
+        name:
+            document.getElementById("name").value.trim(),
+
+        amount:
+            document.getElementById("amount").value.trim(),
+
+        content:
+            document.getElementById("content").value.trim()
+
+    };
+
+
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(data)
+    );
+
+
+    /*
+     * Hien thong bao
+     */
+
+    const message =
+        document.getElementById("savedMessage");
+
+    message.style.display = "block";
+
+
+    setTimeout(function() {
+
+        message.style.display = "none";
+
+    }, 2000);
+
+}
+
+
+
+/*
+==================================================
+DOC THONG TIN DA LUU
+==================================================
+*/
+
+function loadInfo() {
+
+    const data =
+        localStorage.getItem(STORAGE_KEY);
+
+
+    if (!data) {
+        return;
+    }
+
+
+    try {
+
+        const info =
+            JSON.parse(data);
+
+
+        if (info.bank !== undefined) {
+
+            document.getElementById("bank").value =
+                info.bank;
+
+        }
+
+
+        if (info.account !== undefined) {
+
+            document.getElementById("account").value =
+                info.account;
+
+        }
+
+
+        if (info.name !== undefined) {
+
+            document.getElementById("name").value =
+                info.name;
+
+        }
+
+
+        if (info.amount !== undefined) {
+
+            document.getElementById("amount").value =
+                info.amount;
+
+        }
+
+
+        if (info.content !== undefined) {
+
+            document.getElementById("content").value =
+                info.content;
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.log(
+            "Khong doc duoc thong tin da luu",
+            error
+        );
+
+    }
+
+}
+
+
+
+/*
+==================================================
+XOA THONG TIN DA LUU
+==================================================
+*/
+
+function clearSavedInfo() {
+
+    if (
+        !confirm(
+            "Bạn có chắc muốn xóa toàn bộ thông tin đã lưu?"
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    localStorage.removeItem(
+        STORAGE_KEY
+    );
+
+
+    document.getElementById("bank").selectedIndex = 0;
+
+    document.getElementById("account").value = "";
+
+    document.getElementById("name").value = "";
+
+    document.getElementById("amount").value = "";
+
+    document.getElementById("content").value = "";
+
+
+    document.getElementById("qrcode").innerHTML = "";
+
+    document.getElementById("info").style.display =
+        "none";
+
+    document.getElementById("btnDownload").style.display =
+        "none";
+
+
+    alert(
+        "Đã xóa thông tin đã lưu!"
+    );
+
+}
+
+
+
+/*
+==================================================
+TAO QR VIETQR
+==================================================
+*/
+
+function createQR() {
+
+    const bank =
+        document.getElementById("bank").value;
+
+    const account =
+        document.getElementById("account")
+        .value
+        .trim();
+
+    const name =
+        document.getElementById("name")
+        .value
+        .trim();
+
+    const amount =
+        document.getElementById("amount")
+        .value
+        .trim();
+
+    const content =
+        document.getElementById("content")
+        .value
+        .trim();
+
+
+
+    /*
+     * Kiem tra tai khoan
+     */
+
+    if (!account) {
+
+        alert(
+            "Vui lòng nhập số tài khoản!"
+        );
+
+        document.getElementById("account").focus();
+
+        return;
+
+    }
+
+
+
+    /*
+     * Kiem tra ten
+     */
+
+    if (!name) {
+
+        alert(
+            "Vui lòng nhập tên người nhận!"
+        );
+
+        document.getElementById("name").focus();
+
+        return;
+
+    }
+
+
+
+    /*
+     * Luu thong tin
+     */
+
+    saveInfo();
+
+
+
+    /*
+     * Tao URL VietQR
+     */
+
+    let url =
+
+        "https://img.vietqr.io/image/" +
+
+        bank +
+
+        "-" +
+
+        account +
+
+        "-compact2.jpg";
+
+
+
+    /*
+     * Tao tham so
+     */
+
+    const params = [];
+
+
+
+    /*
+     * So tien
+     */
+
+    if (amount) {
+
+        params.push(
+
+            "amount=" +
+
+            encodeURIComponent(amount)
+
+        );
+
+    }
+
+
+
+    /*
+     * Noi dung chuyen khoan
+     */
+
+    if (content) {
+
+        params.push(
+
+            "addInfo=" +
+
+            encodeURIComponent(content)
+
+        );
+
+    }
+
+
+
+    /*
+     * Ten nguoi nhan
+     */
+
+    if (name) {
+
+        params.push(
+
+            "accountName=" +
+
+            encodeURIComponent(name)
+
+        );
+
+    }
+
+
+
+    /*
+     * Noi cac tham so
+     */
+
+    if (params.length > 0) {
+
+        url +=
+
+            "?" +
+
+            params.join("&");
+
+    }
+
+
+
+    /*
+     * Xoa QR cu
+     */
+
+    const qr =
+        document.getElementById("qrcode");
+
+    qr.innerHTML = "";
+
+
+
+    /*
+     * Tao anh QR
+     */
+
+    const img =
+        document.createElement("img");
+
+
+    img.src = url;
+
+    img.alt = "VietQR";
+
+
+    img.style.width = "300px";
+
+    img.style.maxWidth = "100%";
+
+
+
+    /*
+     * Khi anh QR tai xong
+     */
+
+    img.onload = function() {
+
+        document.getElementById(
+            "btnDownload"
+        ).style.display = "block";
+
+    };
+
+
+
+    /*
+     * Neu khong tai duoc
+     */
+
+    img.onerror = function() {
+
+        alert(
+            "Không thể tạo VietQR.\n\n" +
+            "Vui lòng kiểm tra lại ngân hàng " +
+            "và số tài khoản."
+        );
+
+    };
+
+
+
+    qr.appendChild(img);
+
+
+
+    /*
+     * Hien thong tin giao dich
+     */
+
+    const info =
+        document.getElementById("info");
+
+
+    info.style.display = "block";
+
+
+    info.innerHTML =
+
+        "<b>Người nhận:</b> " +
+
+        escapeHTML(name) +
+
+        "<br>" +
+
+
+        "<b>Số tài khoản:</b> " +
+
+        escapeHTML(account) +
+
+        "<br>" +
+
+
+        "<b>Số tiền:</b> " +
+
+        (
+
+            amount
+
+            ?
+
+            Number(amount)
+                .toLocaleString("vi-VN") +
+            " VNĐ"
+
+            :
+
+            "Không cố định"
+
+        ) +
+
+        "<br>" +
+
+
+        "<b>Nội dung:</b> " +
+
+        (
+
+            content
+
+            ?
+
+            escapeHTML(content)
+
+            :
+
+            "Không có"
+
+        );
+
+}
+
+
+
+/*
+==================================================
+TAI QR VE MAY
+==================================================
+*/
+
+function downloadQR() {
+
+    const img =
+        document.querySelector(
+            "#qrcode img"
+        );
+
+
+    if (!img) {
+
+        alert(
+            "Chưa có QR!"
+        );
+
+        return;
+
+    }
+
+
+    const canvas =
+        document.createElement("canvas");
+
+
+    const ctx =
+        canvas.getContext("2d");
+
+
+    const image =
+        new Image();
+
+
+    image.crossOrigin =
+        "anonymous";
+
+
+    image.onload = function() {
+
+        canvas.width =
+            image.naturalWidth;
+
+        canvas.height =
+            image.naturalHeight;
+
+
+        ctx.drawImage(
+            image,
+            0,
+            0
+        );
+
+
+        const link =
+            document.createElement("a");
+
+
+        link.download =
+            "VietQR.png";
+
+
+        link.href =
+            canvas.toDataURL(
+                "image/png"
+            );
+
+
+        link.click();
+
+    };
+
+
+    image.src =
+        img.src;
+
+}
+
+
+
+/*
+==================================================
+BAO VE HTML
+==================================================
+*/
+
+function escapeHTML(text) {
+
+    return text
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+
+/*
+==================================================
+KHI MO TRANG
+==================================================
+*/
+
+window.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        loadInfo();
+
+    }
+);
+
+</script>
+
 </body>
-
 </html>
