@@ -82,11 +82,6 @@ button {
     font-size: 17px;
 }
 
-#btnCreate {
-    background: #1677ff;
-    color: white;
-}
-
 #btnCalculate {
     background: #f59e0b;
     color: white;
@@ -164,6 +159,57 @@ button {
     text-align: center;
 }
 
+.tax-option {
+    margin-top: 10px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    padding: 10px;
+    background: #f1f5f9;
+    border-radius: 8px;
+    flex-wrap: wrap;
+}
+
+.tax-option label {
+    margin: 0;
+    font-weight: normal;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.tax-option input[type="radio"] {
+    width: auto;
+    margin: 0;
+    cursor: pointer;
+}
+
+.tax-rate-input {
+    display: none;
+    margin-left: 10px;
+    align-items: center;
+    gap: 8px;
+}
+
+.tax-rate-input input {
+    width: 80px;
+    padding: 6px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.tax-rate-input.show {
+    display: flex;
+}
+
+.tax-rate-input label {
+    margin: 0;
+    font-weight: normal;
+    font-size: 14px;
+}
+
 .qr-box {
     margin-top: 25px;
     text-align: center;
@@ -214,6 +260,16 @@ button {
     word-break: break-all;
     color: #555;
     line-height: 1.5;
+}
+
+.tax-info {
+    margin-top: 10px;
+    padding: 10px;
+    background: #fef3c7;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #92400e;
+    display: none;
 }
 
 </style>
@@ -332,6 +388,26 @@ Dấu chấm hàng nghìn sẽ tự động thêm.
 
 </div>
 
+<!-- Tùy chọn thuế -->
+<div class="tax-option">
+    <label>
+        <input type="radio" name="taxOption" value="none" checked>
+        Không thuế
+    </label>
+    <label>
+        <input type="radio" name="taxOption" value="vat">
+        Có thuế VAT
+    </label>
+    <div class="tax-rate-input" id="taxRateInput">
+        <label>Thuế suất:</label>
+        <input type="text" id="taxRate" value="10" inputmode="decimal">
+        <label>%</label>
+    </div>
+</div>
+
+<div id="taxInfo" class="tax-info">
+    💡 Đã tính thêm thuế VAT
+</div>
 
 <button
     id="btnCalculate"
@@ -403,15 +479,8 @@ Dấu chấm hàng nghìn sẽ tự động thêm.
 ></div>
 
 <!-- =====================================================
-     NÚT TẠO QR
+     NÚT TẢI QR & CHIA SẺ
 ===================================================== -->
-
-<button
-    id="btnCreate"
-    onclick="createQR()"
->
-    TẠO QR
-</button>
 
 <button
     id="btnDownload"
@@ -1055,12 +1124,10 @@ function calculateMoney() {
 
                 formatMoney(price)
                 +
-                " × "
-                +
+                " × " +
                 formatMoney(quantity)
                 +
-                " = "
-                +
+                " = " +
                 formatMoney(lineTotal)
                 +
                 " đ"
@@ -1122,8 +1189,7 @@ function calculateMoney() {
 
                 formatMoney(number)
                 +
-                " = "
-                +
+                " = " +
                 formatMoney(number)
                 +
                 " đ"
@@ -1144,12 +1210,41 @@ function calculateMoney() {
         ) / 100;
 
 
+    // Kiểm tra tùy chọn thuế
+    const taxOption = document.querySelector('input[name="taxOption"]:checked').value;
+    let finalTotal = total;
+    const taxInfo = document.getElementById('taxInfo');
+    let vatAmount = 0;
+    let vatRate = 0;
+    
+    if (taxOption === 'vat') {
+        // Lấy tỷ lệ thuế từ input
+        const taxRateInput = document.getElementById('taxRate');
+        vatRate = parseFloat(taxRateInput.value) || 0;
+        
+        if (vatRate <= 0) {
+            alert('Vui lòng nhập tỷ lệ thuế VAT hợp lệ (ví dụ: 8, 10)');
+            return;
+        }
+        
+        vatAmount = Math.round(total * vatRate / 100);
+        finalTotal = total + vatAmount;
+        
+        taxInfo.style.display = 'block';
+        taxInfo.innerHTML = `💡 Đã tính thêm thuế VAT ${vatRate}%: +${formatMoney(vatAmount)} đ | Tổng: ${formatMoney(finalTotal)} đ`;
+        details.push('---');
+        details.push(`<b>Thuế VAT (${vatRate}%): +${formatMoney(vatAmount)} đ</b>`);
+    } else {
+        taxInfo.style.display = 'none';
+    }
+
+
     /*
         Đưa tổng vào ô Số tiền.
     */
 
     amountInput.value =
-        formatMoney(total);
+        formatMoney(finalTotal);
 
 
     /*
@@ -1166,21 +1261,20 @@ function calculateMoney() {
         "block";
 
 
-    resultBox.innerHTML =
-
-        "<b>Chi tiết:</b><br>" +
-
+    let resultHTML = "<b>Chi tiết:</b><br>" +
         details.join("<br>") +
-
         '<div class="calc-total">' +
-
         "TỔNG TIỀN: " +
-
-        formatMoney(total) +
-
+        formatMoney(finalTotal) +
         " đ" +
-
         "</div>";
+    
+    // Thêm thông tin thuế suất nếu có
+    if (taxOption === 'vat' && vatRate > 0) {
+        resultHTML += `<div style="margin-top:5px;font-size:13px;color:#666;">Thuế suất: ${vatRate}%</div>`;
+    }
+    
+    resultBox.innerHTML = resultHTML;
 
 
     /*
@@ -1198,6 +1292,8 @@ function calculateMoney() {
 
     saveInfo();
 
+    // Tự động tạo QR sau khi tính tiền
+    createQR();
 }
 
 
@@ -1251,7 +1347,10 @@ function saveInfo() {
                 .trim(),
 
         priceList:
-            priceList.value
+            priceList.value,
+
+        taxOption: document.querySelector('input[name="taxOption"]:checked').value,
+        taxRate: document.getElementById('taxRate').value
     };
 
 
@@ -1377,6 +1476,27 @@ function loadInfo() {
                 info.priceList;
         }
 
+        if (
+            info.taxOption !== undefined
+        ) {
+            document.querySelector(`input[name="taxOption"][value="${info.taxOption}"]`).checked = true;
+        }
+
+        if (
+            info.taxRate !== undefined
+        ) {
+            document.getElementById('taxRate').value = info.taxRate;
+        }
+
+        // Hiển thị ô nhập thuế suất nếu đang chọn có thuế
+        const taxOption = document.querySelector('input[name="taxOption"]:checked').value;
+        const taxRateInput = document.getElementById('taxRateInput');
+        if (taxOption === 'vat') {
+            taxRateInput.classList.add('show');
+        } else {
+            taxRateInput.classList.remove('show');
+        }
+
     }
     catch (error) {
 
@@ -1457,6 +1577,8 @@ function clearSavedInfo() {
     ).style.display =
         "none";
 
+    document.getElementById('taxInfo').style.display = 'none';
+
 
     alert(
         "Đã xóa thông tin đã lưu!"
@@ -1511,20 +1633,19 @@ function createQR() {
 
     if (!account) {
 
-        alert(
-            "Vui lòng nhập số tài khoản!"
-        );
-
+        // Ẩn QR nếu chưa có tài khoản
+        document.getElementById('qrcode').innerHTML = '';
+        document.getElementById('info').style.display = 'none';
+        document.getElementById('btnDownload').style.display = 'none';
         return;
     }
 
 
     if (!name) {
-
-        alert(
-            "Vui lòng nhập tên người nhận!"
-        );
-
+        // Ẩn QR nếu chưa có tên
+        document.getElementById('qrcode').innerHTML = '';
+        document.getElementById('info').style.display = 'none';
+        document.getElementById('btnDownload').style.display = 'none';
         return;
     }
 
@@ -1861,6 +1982,49 @@ window.addEventListener(
     function() {
 
         loadInfo();
+
+        // Xử lý hiển thị ô nhập thuế suất
+        document.querySelectorAll('input[name="taxOption"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const taxRateInput = document.getElementById('taxRateInput');
+                if (this.value === 'vat') {
+                    taxRateInput.classList.add('show');
+                } else {
+                    taxRateInput.classList.remove('show');
+                }
+                saveInfo();
+            });
+        });
+
+        // Lưu khi thay đổi thuế suất
+        document.getElementById('taxRate').addEventListener('input', function() {
+            saveInfo();
+        });
+
+        // Thêm sự kiện cho các trường khác để tự động tạo QR khi thay đổi
+        ['bank', 'account', 'name', 'content'].forEach(id => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.addEventListener('change', function() {
+                    // Chỉ tạo QR nếu có số tiền
+                    if (amountInput.value.trim()) {
+                        createQR();
+                    }
+                });
+                element.addEventListener('input', function() {
+                    saveInfo();
+                    // Tạo QR khi có đủ thông tin và số tiền
+                    if (amountInput.value.trim() && document.getElementById('account').value.trim() && document.getElementById('name').value.trim()) {
+                        createQR();
+                    }
+                });
+            }
+        });
+
+        // Tạo QR ban đầu nếu có đủ thông tin
+        if (amountInput.value.trim() && document.getElementById('account').value.trim() && document.getElementById('name').value.trim()) {
+            createQR();
+        }
 
     }
 );
